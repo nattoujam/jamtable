@@ -1,0 +1,14 @@
+{
+  "name": "jamtable",
+  "private": true,
+  "workspaces": [
+    "packages/client",
+    "packages/api"
+  ],
+  "scripts": {
+    "dev:client": "npm run dev --workspace=packages/client",
+    "dev:api": "npm run dev --workspace=packages/api",
+    "build:client": "npm run build --workspace=packages/client",
+    "build:api": "npm run build --workspace=packages/api"
+  }
+}
