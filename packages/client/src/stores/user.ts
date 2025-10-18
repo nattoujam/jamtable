@@ -1,6 +1,7 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
 import { useSocketStore } from '@/stores/socket.ts'
+import { postLogin, postLogout } from '@/utils/api.ts'
 
 import type { Room } from '@/models/index.ts'
 
@@ -12,13 +13,19 @@ export const useUserStore = defineStore('user', () => {
 
   const isLogin = computed(() => !!name.value)
 
-  const login = (newName: string) => {
+  const login = async (newName: string) => {
     if (!newName.trim()) return
-    name.value = newName.trim()
-    localStorage.setItem('userName', name.value)
+    const res = await postLogin(newName.trim())
+
+    if (res.status === 200) {
+      name.value = res.data.name
+      localStorage.setItem('userName', name.value)
+    }
   }
 
-  const logout = () => {
+  const logout = async () => {
+    await postLogout(name.value)
+
     name.value = ''
     joinRoom.value = null
     localStorage.removeItem('userName')

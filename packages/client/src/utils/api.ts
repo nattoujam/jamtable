@@ -9,4 +9,6 @@ const api = axios.create({
   responseType: 'json',
 })
 
-export default api
+export const postLogin = async (userName: string) => await api.post('/login', { userName })
+export const postLogout = async (userName: string) => await api.post('/logout', { userName })
+export const getRoom = async () => await api.get('/rooms')

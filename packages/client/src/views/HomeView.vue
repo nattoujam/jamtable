@@ -1,40 +1,41 @@
 <template>
   <div class="login-container">
-    <h1>ようこそ！</h1>
-    <p>名前を入力して参加してください</p>
-    <div class="login-form">
-      <input
-        v-model="username"
-        type="text"
-        placeholder="あなたの名前"
-        @keydown.enter="handleLogin"
-      />
-      <button @click="handleLogin">ロビーに入る</button>
+    <div v-if="!userStore.isLogin">
+      <h1>ようこそ！</h1>
+      <p>名前を入力して参加してください</p>
+      <div class="login-form">
+        <input
+          v-model="username"
+          type="text"
+          placeholder="あなたの名前"
+          @keydown.enter="login"
+        />
+        <button @click="login">ログイン</button>
+      </div>
+    </div>
+    <div v-else>
+      <h1>こんにちは、{{ userStore.name }}さん</h1>
+      <div class="login-form">
+        <RouterLink to="/lobby"><button>ロビーに入る</button></RouterLink>
+        <button @click="userStore.logout()">ログアウト</button>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
-import { useUserStore } from '@/stores/user'
+import { ref } from "vue";
+import { useUserStore } from "@/stores/user";
 
-const username = ref('')
-const router = useRouter()
-const userStore = useUserStore()
+const username = ref("");
+const userStore = useUserStore();
 
-const handleLogin = () => {
+const login = async () => {
   if (username.value.trim()) {
-    userStore.login(username.value)
-    router.push('/lobby')
+    await userStore.login(username.value);
+    username.value = ""; // 入力欄をクリア
   }
-}
-
-onMounted(() => {
-  if (userStore.isLoggedIn) {
-    router.push('/lobby')
-  }
-})
+};
 </script>
 
 <style scoped>
