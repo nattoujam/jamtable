@@ -1,9 +1,11 @@
 <template>
-  <h1 @click="toTop">Jamtable</h1>
-  <main>
-    <RouterView />
-  </main>
-  <LogPopup />
+  <v-app>
+    <v-main>
+      <h1 @click="toTop">Jamtable</h1>
+      <RouterView />
+      <LogPopup />
+    </v-main>
+  </v-app>
 </template>
 
 <script setup lang="ts">

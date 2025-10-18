@@ -1,26 +1,34 @@
 <template>
-  <div class="login-container">
-    <div v-if="!userStore.isLogin">
-      <h1>ようこそ！</h1>
-      <p>名前を入力して参加してください</p>
-      <div class="login-form">
-        <input
-          v-model="username"
-          type="text"
-          placeholder="あなたの名前"
-          @keydown.enter="login"
-        />
-        <button @click="login">ログイン</button>
-      </div>
-    </div>
-    <div v-else>
-      <h1>こんにちは、{{ userStore.name }}さん</h1>
-      <div class="login-form">
-        <RouterLink to="/lobby"><button>ロビーに入る</button></RouterLink>
-        <button @click="userStore.logout()">ログアウト</button>
-      </div>
-    </div>
-  </div>
+  <v-container>
+    <v-row justify="center">
+      <v-col cols="12" md="8" class="text-center">
+        <div v-if="!userStore.isLogin">
+          <h2 class="text-h4 mb-4">ようこそ！</h2>
+          <p class="text-subtitle-1 mb-8">名前を入力して参加してください</p>
+          <v-form @submit.prevent="login">
+            <v-text-field
+              v-model="username"
+              label="あなたの名前"
+              name="username"
+              prepend-icon="mdi-account"
+              type="text"
+              @keydown.enter="login"
+              variant="solo"
+              class="mx-auto" style="max-width: 400px;"
+            ></v-text-field>
+            <v-btn class="mt-4" color="primary" size="large" @click="login">ログイン</v-btn>
+          </v-form>
+        </div>
+        <div v-else>
+          <h2 class="text-h4 mb-4">こんにちは、{{ userStore.name }}さん</h2>
+          <div class="d-flex justify-center ga-4">
+            <v-btn color="primary" to="/lobby" size="large">ロビーに入る</v-btn>
+            <v-btn color="secondary" @click="userStore.logout()" size="large">ログアウト</v-btn>
+          </div>
+        </div>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script setup lang="ts">
@@ -37,53 +45,3 @@ const login = async () => {
   }
 };
 </script>
-
-<style scoped>
-.login-container {
-  max-width: 400px;
-  margin: 100px auto;
-  padding: 40px;
-  text-align: center;
-  border-radius: 8px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  background-color: #fff;
-}
-
-h1 {
-  font-size: 2em;
-  margin-bottom: 10px;
-}
-
-p {
-  color: #666;
-  margin-bottom: 30px;
-}
-
-.login-form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-input {
-  padding: 12px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 1em;
-}
-
-button {
-  padding: 12px;
-  border: none;
-  border-radius: 4px;
-  background-color: #007bff;
-  color: white;
-  font-size: 1em;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-button:hover {
-  background-color: #0056b3;
-}
-</style>
