@@ -43,7 +43,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, nextTick, onUnmounted } from 'vue'
+import { ref, useTemplateRef, watch, nextTick, onUnmounted } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useSocketStore } from '@/stores/socket'
 import { useUserStore } from '@/stores/user'
@@ -57,7 +57,7 @@ const MAX_HISTORY = 100
 const chatInput = ref('')
 const chatHistoryList = ref<Chat[]>([])
 const isChatOpen = ref(false)
-const chatBody = ref<HTMLElement | null>(null)
+const chatBody = useTemplateRef('chatBody')
 
 const pushChat = (chat: Chat) => {
   chatHistoryList.value.push(chat)
@@ -85,15 +85,18 @@ on('receive-chat', (chat: Chat) => {
   pushChat(chat)
 })
 
+const scrollBottom = () => {
+  if (!chatBody.value) return
+
+  const ele = chatBody.value.$el
+  console.log(ele.scrollTop, ele.scrollHeight)
+  ele.scrollTop = ele.scrollHeight
+}
+
 watch(
   chatHistoryList,
   () => {
-    nextTick(() => {
-      const body = chatBody.value
-      if (body) {
-        body.scrollTop = body.scrollHeight
-      }
-    })
+    nextTick(() => scrollBottom())
   },
   { deep: true },
 )
