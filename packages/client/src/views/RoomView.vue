@@ -1,10 +1,14 @@
 <template>
   <v-container>
-    <v-row justify="center">
+    <div v-if="!joinRoom">
+      <div>Loading...</div>
+      <v-btn color="error" variant="tonal" to="/lobby">ロビーへ戻る</v-btn>
+    </div>
+    <v-row v-else justify="center">
       <v-col cols="12" md="8">
         <v-card>
           <v-card-title class="d-flex justify-space-between align-center">
-            <span>部屋: {{ joinRoom?.name || joinRoom?.id }}</span>
+            <span>部屋: {{ joinRoom?.name }}</span>
             <v-btn color="error" variant="tonal" @click="leaveRoom">部屋を出る</v-btn>
           </v-card-title>
           <v-divider></v-divider>
