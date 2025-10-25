@@ -18,6 +18,7 @@
             ></v-text-field>
             <v-btn class="mt-4" color="primary" size="large" @click="login">ログイン</v-btn>
           </v-form>
+          <AnalogClock />
         </div>
         <div v-else>
           <h2 class="text-h4 mb-4">こんにちは、{{ userStore.name }}さん</h2>
@@ -34,6 +35,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useUserStore } from "@/stores/user";
+import AnalogClock from "@/components/AnalogClock.vue";
 
 const username = ref("");
 const userStore = useUserStore();
